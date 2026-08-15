@@ -1,0 +1,75 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  name: string;
+  description: string;
+  why: string;
+  image: string | ImageMetadata;
+  url: string;
+}
+
+const { name, description, why, image, url } = Astro.props;
+
+/** Never render demo/placeholder Amazon ASINs in production HTML. */
+const isPlaceholderLink = /EXAMPLE/i.test(url);
+const isAssetImage = typeof image !== 'string';
+---
+
+{
+  !isPlaceholderLink && (
+    <aside class="my-8 border border-rule bg-linen p-4 sm:my-10 sm:p-6" data-affiliate-product>
+      <div class="grid gap-4 sm:grid-cols-[7.5rem_1fr] sm:items-start sm:gap-5">
+        {
+          isAssetImage ? (
+            <Image
+              src={image}
+              alt={name}
+              widths={[160, 240, 320]}
+              sizes="(max-width: 640px) 160px, 120px"
+              class="mx-auto aspect-square w-40 max-w-full object-cover sm:mx-0 sm:w-[7.5rem]"
+              loading="lazy"
+            />
+          ) : (
+            <img
+              src={image}
+              alt={name}
+              width="240"
+              height="240"
+              loading="lazy"
+              decoding="async"
+              class="mx-auto aspect-square w-40 max-w-full object-cover sm:mx-0 sm:w-[7.5rem]"
+            />
+          )
+        }
+        <div class="min-w-0">
+          <p class="section-label">Editor&rsquo;s pick</p>
+          <h3 class="mt-2 font-display text-xl text-ink sm:text-2xl">{name}</h3>
+          <p class="mt-2 text-sm text-ink-muted leading-relaxed sm:text-base">{description}</p>
+          <p class="mt-3 text-sm leading-relaxed text-ink">
+            <span class="font-medium text-sage">Why we recommend it:</span>
+            {' '}
+            {why}
+          </p>
+          <div class="mt-5">
+            <a
+              href={url}
+              class="btn-primary btn-block-mobile !text-linen text-center"
+              rel="sponsored noopener noreferrer"
+              target="_blank"
+            >
+              View on Amazon
+            </a>
+          </div>
+          <p class="mt-4 text-xs leading-relaxed text-ink-muted/80">
+            Affiliate link. As an Amazon Associate, we may earn from qualifying purchases.
+            <a href="/affiliate-disclosure/" class="underline underline-offset-2 hover:text-sage">
+              Learn more
+            </a>
+          </p>
+        </div>
+      </div>
+    </aside>
+  )
+}

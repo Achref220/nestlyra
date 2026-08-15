@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_NAME } from '../utils/categories';
+---
+
+<BaseLayout
+  title="Affiliate Disclosure"
+  description="Nestlyra affiliate disclosure — how product links and commissions work."
+  canonicalPath="/affiliate-disclosure/"
+>
+  <article class="container-editorial max-w-3xl py-10 sm:py-14 md:py-20">
+    <p class="section-label">Legal</p>
+    <h1 class="mt-2 font-display text-4xl text-ink sm:mt-3 sm:text-5xl">Affiliate Disclosure</h1>
+    <p class="mt-4 text-sm text-ink-muted">Last updated: August 5, 2026</p>
+    <div class="prose-editorial mt-8">
+      <p>
+        {SITE_NAME} participates in the Amazon Services LLC Associates Program and may join other
+        home decor affiliate programs. That means we may earn commissions from qualifying purchases
+        made through links on this site — at no additional cost to you.
+      </p>
+      <h2>Editorial independence</h2>
+      <p>
+        Affiliate relationships can support Nestlyra’s publishing work. They do not dictate our
+        recommendations. We aim to feature products that align with our aesthetic and usefulness
+        standards.
+      </p>
+      <h2>How links appear</h2>
+      <p>
+        Product modules and in-article links may include tracking parameters. Outbound affiliate
+        links use appropriate <code>rel</code> attributes such as <code>sponsored</code>.
+      </p>
+      <h2>Product details</h2>
+      <p>
+        Nestlyra does not display product prices. Always confirm current pricing and availability on
+        the merchant page before purchasing.
+      </p>
+      <h2>Questions</h2>
+      <p>
+        Email <a href="mailto:hello@nestlyraliving.com">hello@nestlyraliving.com</a> with disclosure
+        questions.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

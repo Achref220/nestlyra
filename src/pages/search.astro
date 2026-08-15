@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Search"
+  description="Search Nestlyra articles for bedroom, living room, kitchen, and home styling ideas."
+  canonicalPath="/search/"
+>
+  <section class="container-editorial py-10 sm:py-14 md:py-20">
+    <p class="section-label">Search</p>
+    <h1 class="mt-2 font-display text-4xl text-ink sm:mt-3 sm:text-5xl">Find an idea</h1>
+    <p class="mt-3 max-w-xl text-sm text-ink-muted leading-relaxed sm:mt-4 sm:text-base">
+      Search titles, descriptions, categories, and tags across every published Nestlyra article.
+    </p>
+
+    <label class="mt-8 block sm:mt-10" for="search-input">
+      <span class="sr-only">Search articles</span>
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Try “bedroom lighting” or “small spaces”"
+        autocomplete="off"
+        class="min-h-12 w-full border border-rule bg-linen px-4 py-3 text-base text-ink placeholder:text-ink-muted/50 focus:border-sage sm:px-5 sm:py-4 sm:text-lg"
+      />
+    </label>
+
+    <p id="search-meta" class="mt-4 text-sm text-ink-muted" role="status" aria-live="polite"></p>
+
+    <div id="search-results" class="mt-8 grid gap-8 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  const meta = document.getElementById('search-meta');
+
+  let items = [];
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function normalize(value) {
+    return value.toLowerCase().trim();
+  }
+
+  function render(list, query) {
+    if (!results || !meta) return;
+
+    if (!query) {
+      meta.textContent = `${items.length} articles available`;
+      results.innerHTML = items.slice(0, 9).map(card).join('');
+      return;
+    }
+
+    meta.textContent =
+      list.length === 0
+        ? `No results for “${query}”`
+        : `${list.length} result${list.length === 1 ? '' : 's'} for “${query}”`;
+    results.innerHTML = list.map(card).join('');
+  }
+
+  function card(item) {
+    const href = escapeHtml(item.href);
+    const image = escapeHtml(item.image);
+    const imageAlt = escapeHtml(item.imageAlt);
+    const categoryLabel = escapeHtml(item.categoryLabel);
+    const title = escapeHtml(item.title);
+    const description = escapeHtml(item.description);
+
+    return `
+      <article class="group">
+        <a href="${href}" class="img-zoom block">
+          <img src="${image}" alt="${imageAlt}" width="480" height="600" loading="lazy" class="aspect-[4/5] w-full object-cover" />
+        </a>
+        <p class="section-label mt-4">${categoryLabel}</p>
+        <h2 class="mt-2 font-display text-2xl text-ink group-hover:text-sage">
+          <a href="${href}">${title}</a>
+        </h2>
+        <p class="mt-2 text-ink-muted line-clamp-3">${description}</p>
+      </article>
+    `;
+  }
+
+  function search(query) {
+    const q = normalize(query);
+    if (!q) return items;
+    return items.filter((item) => {
+      const haystack = normalize(
+        [item.title, item.description, item.categoryLabel, item.category, ...item.tags].join(' '),
+      );
+      return haystack.includes(q);
+    });
+  }
+
+  async function init() {
+    if (!(input instanceof HTMLInputElement) || !results || !meta) return;
+
+    try {
+      const response = await fetch('/search-index');
+      items = await response.json();
+    } catch {
+      meta.textContent = 'Unable to load search index.';
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const initial = params.get('q') ?? '';
+    input.value = initial;
+    render(search(initial), initial);
+
+    input.addEventListener('input', () => {
+      const query = input.value;
+      const url = new URL(window.location.href);
+      if (query) url.searchParams.set('q', query);
+      else url.searchParams.delete('q');
+      window.history.replaceState({}, '', url);
+      render(search(query), query.trim());
+    });
+  }
+
+  init();
+</script>

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categories } from '../utils/categories';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The page you are looking for could not be found on Nestlyra."
+  canonicalPath="/404/"
+  noindex={true}
+>
+  <section class="container-editorial flex flex-1 flex-col items-start justify-center py-16 sm:py-24">
+    <p class="section-label">Error 404</p>
+    <h1 class="mt-3 font-display text-4xl text-ink sm:text-5xl md:text-6xl">Page not found</h1>
+    <p class="mt-5 max-w-xl text-base text-ink-muted leading-relaxed sm:text-lg">
+      That page may have moved, or the link might be outdated. Try searching for an idea, or browse a
+      room category below.
+    </p>
+
+    <div class="mt-8 flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:flex-wrap">
+      <a href="/" class="btn-primary btn-block-mobile text-center">Back to home</a>
+      <a href="/search/" class="btn-secondary btn-block-mobile text-center">Search articles</a>
+    </div>
+
+    <div class="mt-14 w-full">
+      <p class="section-label">Browse by room</p>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          categories.map((category) => (
+            <li>
+              <a
+                href={`/${category.slug}/`}
+                class="block border border-rule bg-linen px-4 py-3 text-ink hover:border-sage hover:text-sage"
+              >
+                {category.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

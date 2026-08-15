@@ -1,0 +1,50 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+{
+  toc.length > 1 && (
+    <nav aria-label="Table of contents" class="border border-rule bg-linen">
+      <details class="group lg:hidden">
+        <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-ink marker:content-none [&::-webkit-details-marker]:hidden">
+          <span>In this article</span>
+          <span class="text-ink-muted group-open:hidden" aria-hidden="true">+</span>
+          <span class="hidden text-ink-muted group-open:inline" aria-hidden="true">−</span>
+        </summary>
+        <ol class="space-y-1 border-t border-rule px-4 py-3">
+          {toc.map((heading) => (
+            <li class:list={[heading.depth === 3 && 'pl-4']}>
+              <a href={`#${heading.slug}`} class="block py-2 text-sm text-ink-muted hover:text-sage">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
+
+      <div class="hidden p-5 sm:p-6 lg:block">
+        <p class="section-label">In this article</p>
+        <ol class="mt-4 space-y-2">
+          {toc.map((heading) => (
+            <li class:list={[heading.depth === 3 && 'pl-4']}>
+              <a href={`#${heading.slug}`} class="text-sm text-ink-muted hover:text-sage">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </nav>
+  )
+}

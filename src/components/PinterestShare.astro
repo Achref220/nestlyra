@@ -1,0 +1,51 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+}
+
+const { title, description, url, image } = Astro.props;
+const pinUrl = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(`${title} — ${description}`)}${image ? `&media=${encodeURIComponent(image)}` : ''}`;
+---
+
+<section class="border border-rule bg-sage-soft/40 p-4 sm:p-6 md:p-8" aria-labelledby="share-heading">
+  <p class="section-label">Save for later</p>
+  <h2 id="share-heading" class="mt-2 font-display text-xl text-ink sm:text-2xl">Pin this idea</h2>
+  <p class="mt-3 max-w-xl text-sm text-ink-muted leading-relaxed sm:text-base">
+    Designed for Pinterest — tall visuals, clear titles, and room ideas you can revisit when you decorate.
+  </p>
+  <div class="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:flex-wrap">
+    <a
+      href={pinUrl}
+      class="btn-primary btn-block-mobile text-center"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-pin-do="buttonPin"
+    >
+      Save to Pinterest
+    </a>
+    <button type="button" class="btn-secondary btn-block-mobile" data-copy-link={url}>
+      Copy link
+    </button>
+  </div>
+  <p class="mt-3 text-sm text-ink-muted" data-copy-status role="status" aria-live="polite"></p>
+</section>
+
+<script>
+  const button = document.querySelector('[data-copy-link]');
+  const status = document.querySelector('[data-copy-status]');
+  if (button instanceof HTMLButtonElement && status) {
+    button.addEventListener('click', async () => {
+      const value = button.dataset.copyLink;
+      if (!value) return;
+      try {
+        await navigator.clipboard.writeText(value);
+        status.textContent = 'Link copied.';
+      } catch {
+        status.textContent = 'Unable to copy. Please copy from the address bar.';
+      }
+    });
+  }
+</script>

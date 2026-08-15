@@ -1,0 +1,83 @@
+---
+import { categories, SITE_NAME } from '../utils/categories';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 border-b border-rule/70 bg-linen/90 backdrop-blur-md">
+  <div class="container-editorial flex items-center justify-between gap-3 py-3 sm:gap-4 sm:py-4">
+    <a href="/" class="group min-w-0 shrink" aria-label={`${SITE_NAME} home`}>
+      <span class="font-display text-[1.35rem] tracking-tight text-ink sm:text-2xl lg:text-[1.75rem]">
+        {SITE_NAME}
+      </span>
+      <span class="mt-0.5 hidden text-[0.65rem] tracking-[0.22em] text-ink-muted uppercase opacity-80 group-hover:text-sage sm:block">
+        Living well at home
+      </span>
+    </a>
+
+    <nav class="hidden max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-x-3 gap-y-1 xl:gap-x-4 lg:flex" aria-label="Primary">
+      {
+        categories.map((category) => (
+          <a
+            href={`/${category.slug}/`}
+            class:list={[
+              'whitespace-nowrap text-sm tracking-wide hover:text-sage',
+              currentPath.startsWith(`/${category.slug}`) ? 'text-sage' : 'text-ink-muted',
+            ]}
+          >
+            {category.name}
+          </a>
+        ))
+      }
+      <a
+        href="/search/"
+        class:list={[
+          'text-sm tracking-wide hover:text-sage',
+          currentPath.startsWith('/search') ? 'text-sage' : 'text-ink-muted',
+        ]}
+      >
+        Search
+      </a>
+    </nav>
+
+    <details class="group relative lg:hidden">
+      <summary
+        class="flex list-none cursor-pointer items-center gap-2 border border-rule bg-linen px-3 py-2.5 text-sm text-ink marker:content-none [&::-webkit-details-marker]:hidden"
+        aria-label="Open menu"
+      >
+        <span class="font-medium">Menu</span>
+        <span class="text-ink-muted group-open:hidden" aria-hidden="true">☰</span>
+        <span class="hidden text-ink-muted group-open:inline" aria-hidden="true">✕</span>
+      </summary>
+      <div
+        class="absolute right-0 z-50 mt-2 max-h-[min(70vh,28rem)] w-[min(18rem,calc(100vw-2rem))] overflow-y-auto border border-rule bg-linen p-2 shadow-lg"
+      >
+        <nav class="flex flex-col" aria-label="Mobile">
+          {
+            categories.map((category) => (
+              <a
+                href={`/${category.slug}/`}
+                class:list={[
+                  'min-h-11 px-3 py-3 text-sm hover:bg-sage-soft hover:text-sage',
+                  currentPath.startsWith(`/${category.slug}`) ? 'text-sage' : 'text-ink',
+                ]}
+              >
+                {category.name}
+              </a>
+            ))
+          }
+          <div class="my-1 border-t border-rule"></div>
+          <a href="/search/" class="min-h-11 px-3 py-3 text-sm text-ink hover:bg-sage-soft hover:text-sage">
+            Search
+          </a>
+          <a href="/about/" class="min-h-11 px-3 py-3 text-sm text-ink hover:bg-sage-soft hover:text-sage">
+            About
+          </a>
+          <a href="/contact/" class="min-h-11 px-3 py-3 text-sm text-ink hover:bg-sage-soft hover:text-sage">
+            Contact
+          </a>
+        </nav>
+      </div>
+    </details>
+  </div>
+</header>

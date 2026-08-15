@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+import type { ArticleEntry } from '../utils/articles';
+import { formatDate, getArticleHref, getCategoryLabel } from '../utils/articles';
+
+interface Props {
+  article: ArticleEntry;
+  priority?: boolean;
+  variant?: 'default' | 'featured' | 'compact';
+}
+
+const { article, priority = false, variant = 'default' } = Astro.props;
+const href = getArticleHref(article);
+---
+
+<article
+  class:list={[
+    'group min-w-0',
+    variant === 'featured' && 'grid gap-5 sm:gap-6 md:grid-cols-2 md:items-center',
+    variant === 'compact' && 'flex gap-3 sm:gap-4',
+  ]}
+>
+  <a
+    href={href}
+    class:list={['img-zoom block min-w-0', variant === 'compact' ? 'w-24 shrink-0 sm:w-28' : '']}
+  >
+    <Image
+      src={article.data.featuredImage}
+      alt={article.data.featuredImageAlt}
+      widths={variant === 'compact' ? [224, 320] : [480, 720, 960]}
+      sizes={
+        variant === 'compact'
+          ? '112px'
+          : variant === 'featured'
+            ? '(max-width: 768px) 100vw, 50vw'
+            : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
+      }
+      class:list={[
+        'h-full w-full object-cover object-center',
+        variant === 'compact' ? 'aspect-square' : 'aspect-[4/5]',
+        variant === 'featured' && 'aspect-[4/5] sm:aspect-[5/4] md:aspect-[4/5]',
+      ]}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : undefined}
+    />
+  </a>
+
+  <div class:list={['min-w-0', variant === 'featured' && 'md:pr-6']}>
+    <p class="section-label">
+      <a href={`/${article.data.category}/`} class="hover:text-sage-deep">
+        {getCategoryLabel(article.data.category)}
+      </a>
+    </p>
+    <h3
+      class:list={[
+        'mt-2 font-display text-ink group-hover:text-sage',
+        variant === 'featured'
+          ? 'text-2xl sm:text-3xl md:text-4xl'
+          : variant === 'compact'
+            ? 'text-base sm:text-lg'
+            : 'text-xl sm:text-2xl',
+      ]}
+    >
+      <a href={href} class="break-words">{article.data.title}</a>
+    </h3>
+    {
+      variant !== 'compact' && (
+        <p class="mt-2 text-sm text-ink-muted leading-relaxed line-clamp-3 sm:mt-3 sm:text-base">
+          {article.data.description}
+        </p>
+      )
+    }
+    <time
+      class="mt-3 block text-xs text-ink-muted/80 sm:mt-4 sm:text-sm"
+      datetime={article.data.publishDate.toISOString()}
+    >
+      {formatDate(article.data.publishDate)}
+    </time>
+  </div>
+</article>

@@ -1,0 +1,30 @@
+---
+import { getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import ProductRecommendation from '../../components/ProductRecommendation.astro';
+import { getPublishedArticles, getRelatedArticles } from '../../utils/articles';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+const related = await getRelatedArticles(article);
+
+const optimized = await getImage({
+  src: article.data.featuredImage,
+  width: 1200,
+  format: 'jpg',
+});
+const ogImagePath = optimized.src;
+---
+
+<ArticleLayout article={article} headings={headings} related={related} ogImagePath={ogImagePath}>
+  <Content components={{ ProductRecommendation }} />
+</ArticleLayout>

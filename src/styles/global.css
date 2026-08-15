@@ -1,0 +1,181 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/figtree/wght.css";
+
+@theme {
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-sans: "Figtree Variable", "Figtree", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #1c1917;
+  --color-ink-muted: #57534e;
+  --color-canvas: #f3f0ea;
+  --color-canvas-deep: #e8e4dc;
+  --color-sage: #3d5a4c;
+  --color-sage-soft: #e8ede8;
+  --color-sage-deep: #2f463c;
+  --color-linen: #faf8f4;
+  --color-rule: #d6d1c7;
+
+  --animate-fade-up: fade-up 0.7s ease-out both;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply overflow-x-hidden bg-canvas text-ink font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgb(232 237 232 / 0.7), transparent),
+      linear-gradient(180deg, rgb(250 248 244 / 0.55), transparent 28%);
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  img,
+  video,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    @apply bg-sage-soft text-ink;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-sage;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    overflow-wrap: break-word;
+  }
+}
+
+@layer components {
+  .container-editorial {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .prose-editorial {
+    @apply min-w-0 text-base leading-relaxed text-ink-muted sm:text-lg;
+  }
+
+  .prose-editorial h2 {
+    @apply mt-10 mb-3 font-display text-2xl text-ink sm:mt-12 sm:mb-4 sm:text-3xl;
+  }
+
+  .prose-editorial h3 {
+    @apply mt-8 mb-3 font-display text-xl text-ink sm:text-2xl;
+  }
+
+  .prose-editorial p {
+    @apply mb-5;
+  }
+
+  .prose-editorial ul {
+    @apply mb-5 list-disc space-y-2 pl-5 sm:pl-6;
+  }
+
+  .prose-editorial ol {
+    @apply mb-5 list-decimal space-y-2 pl-5 sm:pl-6;
+  }
+
+  .prose-editorial a:not(.btn-primary):not(.btn-secondary) {
+    @apply text-sage underline decoration-sage/30 underline-offset-4 hover:decoration-sage;
+  }
+
+  .prose-editorial strong {
+    @apply font-semibold text-ink;
+  }
+
+  .prose-editorial blockquote {
+    @apply my-6 border-l-2 border-sage pl-4 font-display text-lg italic text-ink sm:my-8 sm:pl-6 sm:text-xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center bg-sage px-5 py-3 text-sm font-medium tracking-wide text-linen no-underline transition hover:bg-sage-deep hover:text-linen sm:px-6;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center border border-ink/15 bg-transparent px-5 py-3 text-sm font-medium tracking-wide text-ink no-underline transition hover:border-sage hover:text-sage sm:px-6;
+  }
+
+  .btn-block-mobile {
+    @apply w-full sm:w-auto;
+  }
+
+  .section-label {
+    @apply text-[0.7rem] font-medium tracking-[0.18em] text-sage uppercase sm:text-xs sm:tracking-[0.2em];
+  }
+
+  .section-heading {
+    @apply font-display text-3xl text-ink sm:text-4xl;
+  }
+
+  .img-zoom {
+    @apply overflow-hidden;
+  }
+
+  .img-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .img-zoom:hover img {
+      @apply scale-[1.03];
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .img-zoom:hover img {
+    transform: none !important;
+  }
+}

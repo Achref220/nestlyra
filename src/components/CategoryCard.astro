@@ -1,0 +1,28 @@
+---
+import type { Category } from '../utils/categories';
+
+interface Props {
+  category: Category;
+  count?: number;
+}
+
+const { category, count } = Astro.props;
+---
+
+<a
+  href={`/${category.slug}/`}
+  class="group relative block min-w-0 overflow-hidden bg-sage-soft/40 px-5 py-8 transition hover:bg-sage-soft sm:px-6 sm:py-10"
+>
+  <p class="section-label">Category</p>
+  <h3 class="mt-2 font-display text-2xl text-ink group-hover:text-sage sm:mt-3 sm:text-3xl">
+    {category.name}
+  </h3>
+  <p class="mt-2 text-sm text-ink-muted leading-relaxed sm:mt-3 sm:text-base">{category.description}</p>
+  {
+    typeof count === 'number' && (
+      <p class="mt-4 text-sm tracking-wide text-sage sm:mt-6">
+        {count} {count === 1 ? 'article' : 'articles'}
+      </p>
+    )
+  }
+</a>

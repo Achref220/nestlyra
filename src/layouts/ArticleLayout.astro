@@ -1,0 +1,148 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import ProductRecommendation from '../components/ProductRecommendation.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+import PinterestShare from '../components/PinterestShare.astro';
+import type { ArticleEntry } from '../utils/articles';
+import { formatDate, getCategoryLabel } from '../utils/articles';
+import {
+  absoluteUrl,
+  articleSchema,
+  breadcrumbSchema,
+  type BreadcrumbItem,
+} from '../utils/seo';
+import { formatReadingTime, getReadingTimeMinutes } from '../utils/readingTime';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  article: ArticleEntry;
+  headings: Heading[];
+  related: ArticleEntry[];
+  ogImagePath: string;
+}
+
+const { article, headings, related, ogImagePath } = Astro.props;
+const { data } = article;
+const categoryName = getCategoryLabel(data.category);
+const articleUrl = absoluteUrl(`/articles/${article.id}/`);
+const seoTitle = data.seo?.title ?? data.title;
+const seoDescription = data.seo?.description ?? data.description;
+const readingMinutes = getReadingTimeMinutes(article.body);
+const readingLabel = formatReadingTime(readingMinutes);
+const shopProducts = (data.affiliateProducts ?? []).filter(
+  (product) => !/EXAMPLE/i.test(product.url),
+);
+
+const crumbs: BreadcrumbItem[] = [
+  { name: 'Home', href: '/' },
+  { name: categoryName, href: `/${data.category}/` },
+  { name: data.title, href: `/articles/${article.id}/` },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  articleSchema({
+    title: data.title,
+    description: data.description,
+    url: articleUrl,
+    image: absoluteUrl(ogImagePath),
+    author: data.author,
+    publishDate: data.publishDate,
+    updatedDate: data.updatedDate,
+  }),
+];
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  canonicalPath={`/articles/${article.id}/`}
+  image={ogImagePath}
+  type="article"
+  noindex={data.seo?.noindex}
+  publishedTime={data.publishDate}
+  modifiedTime={data.updatedDate ?? data.publishDate}
+  author={data.author}
+  jsonLd={jsonLd}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <article>
+    <header class="relative">
+      <div class="img-zoom">
+        <Image
+          src={data.featuredImage}
+          alt={data.featuredImageAlt}
+          widths={[720, 1080, 1600, 2000]}
+          sizes="100vw"
+          class="aspect-[4/5] w-full object-cover object-center sm:aspect-[16/10] md:aspect-[21/9]"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="container-editorial relative -mt-10 sm:-mt-16 md:-mt-24">
+        <div class="max-w-3xl animate-[fade-up_0.7s_ease-out] border border-rule bg-linen p-4 shadow-sm sm:p-6 md:p-10">
+          <p class="section-label">
+            <a href={`/${data.category}/`} class="hover:text-sage-deep">{categoryName}</a>
+          </p>
+          <h1 class="mt-2 font-display text-3xl leading-tight text-ink sm:mt-3 sm:text-4xl md:text-5xl">
+            {data.title}
+          </h1>
+          <p class="mt-4 text-base text-ink-muted leading-relaxed sm:mt-5 sm:text-lg">{data.description}</p>
+          <div class="mt-5 flex flex-col gap-1 text-sm text-ink-muted sm:mt-6 sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-2">
+            <span>By {data.author}</span>
+            <time datetime={data.publishDate.toISOString()}>{formatDate(data.publishDate)}</time>
+            {
+              data.updatedDate && (
+                <time datetime={data.updatedDate.toISOString()}>
+                  Updated {formatDate(data.updatedDate)}
+                </time>
+              )
+            }
+            <span>{readingLabel}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-editorial mt-8 grid gap-8 sm:mt-12 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_16rem]">
+      <div class="prose-editorial order-2 min-w-0 max-w-3xl lg:order-1">
+        <slot />
+
+        {
+          shopProducts.length ? (
+            <section class="mt-10 sm:mt-12" aria-labelledby="products-heading">
+              <h2 id="products-heading">Shop the look</h2>
+              {shopProducts.map((product) => (
+                <ProductRecommendation {...product} />
+              ))}
+            </section>
+          ) : null
+        }
+      </div>
+
+      <aside class="order-1 min-w-0 lg:order-2 lg:sticky lg:top-28 lg:self-start">
+        <TableOfContents headings={headings} />
+      </aside>
+    </div>
+
+    <div class="container-editorial mt-10 max-w-3xl sm:mt-12">
+      <PinterestShare
+        title={data.title}
+        description={data.description}
+        url={articleUrl}
+        image={absoluteUrl(ogImagePath)}
+      />
+    </div>
+  </article>
+
+  <RelatedArticles articles={related} />
+</BaseLayout>

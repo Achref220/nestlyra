@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_NAME } from '../utils/categories';
+---
+
+<BaseLayout
+  title="Terms of Use"
+  description={`Terms of use for ${SITE_NAME} — nestlyraliving.com.`}
+  canonicalPath="/terms/"
+>
+  <article class="container-editorial max-w-3xl py-10 sm:py-14 md:py-20">
+    <p class="section-label">Legal</p>
+    <h1 class="mt-2 font-display text-4xl text-ink sm:mt-3 sm:text-5xl">Terms of Use</h1>
+    <p class="mt-4 text-sm text-ink-muted">Last updated: August 5, 2026</p>
+    <div class="prose-editorial mt-8">
+      <p>
+        Welcome to {SITE_NAME} (“we”, “us”, “our”), operated at nestlyraliving.com. By accessing or
+        using this website, you agree to these Terms of Use. If you do not agree, please do not use
+        the site.
+      </p>
+
+      <h2>Editorial content</h2>
+      <p>
+        Articles, images, and product recommendations are for general inspiration and informational
+        purposes. We do not guarantee that any design idea, product, or tip will suit your home,
+        budget, or circumstances.
+      </p>
+
+      <h2>Affiliate relationships</h2>
+      <p>
+        Some links on this site are affiliate links. If you purchase through those links, we may
+        earn a commission at no extra cost to you. See our
+        <a href="/affiliate-disclosure/">Affiliate Disclosure</a> for details. Product availability,
+        pricing, and descriptions on retailer sites can change without notice.
+      </p>
+
+      <h2>Intellectual property</h2>
+      <p>
+        Unless otherwise noted, site design, branding, and original written content are owned by
+        {SITE_NAME} or used with permission. You may not copy, republish, or commercially exploit
+        substantial portions of the site without prior written consent.
+      </p>
+
+      <h2>User conduct</h2>
+      <p>
+        You agree not to misuse the site, attempt to disrupt its operation, scrape content at a
+        scale that harms performance, or use the site for unlawful purposes.
+      </p>
+
+      <h2>Third-party sites</h2>
+      <p>
+        Links to Amazon and other retailers or services are provided for convenience. We are not
+        responsible for the content, policies, or practices of third-party websites.
+      </p>
+
+      <h2>Disclaimer of warranties</h2>
+      <p>
+        The site is provided “as is” without warranties of any kind, express or implied, including
+        fitness for a particular purpose or non-infringement, to the fullest extent permitted by
+        law.
+      </p>
+
+      <h2>Limitation of liability</h2>
+      <p>
+        To the fullest extent permitted by law, {SITE_NAME} shall not be liable for any indirect,
+        incidental, special, consequential, or punitive damages arising from your use of the site.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We may update these Terms from time to time. Continued use of the site after changes are
+        posted constitutes acceptance of the revised Terms.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these Terms:
+        <a href="mailto:hello@nestlyraliving.com">hello@nestlyraliving.com</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

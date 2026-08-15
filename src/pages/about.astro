@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import { SITE_NAME } from '../utils/categories';
+---
+
+<BaseLayout
+  title="About"
+  description="Nestlyra is an editorial home decor site helping readers create calm, elevated spaces — and discover products worth living with."
+  canonicalPath="/about/"
+>
+  <article class="container-editorial max-w-3xl py-10 sm:py-14 md:py-20">
+    <p class="section-label">About</p>
+    <h1 class="mt-2 font-display text-4xl text-ink sm:mt-3 sm:text-5xl">About {SITE_NAME}</h1>
+    <div class="prose-editorial mt-8">
+      <p>
+        Nestlyra is a home inspiration magazine for people who want rooms that feel calm, collected,
+        and genuinely livable. We publish SEO-minded guides designed to be discovered on Google and
+        saved on Pinterest — then used in real homes.
+      </p>
+      <h2>What we believe</h2>
+      <p>
+        Beautiful interiors do not require excess. They require editing, good light, honest materials,
+        and products chosen with care. Our articles focus on practical styling frameworks you can
+        adapt to apartments, houses, and every size in between.
+      </p>
+      <h2>How we monetize</h2>
+      <p>
+        Nestlyra participates in affiliate programs, including Amazon. When you purchase through our
+        links, we may earn a commission at no extra cost to you. Recommendations are editorial first.
+        Read our <a href="/affiliate-disclosure/">affiliate disclosure</a> for details.
+      </p>
+      <h2>Say hello</h2>
+      <p>
+        Partnerships, corrections, or press inquiries are welcome on our
+        <a href="/contact/">contact page</a>.
+      </p>
+    </div>
+
+    <div class="mt-14">
+      <p class="section-label">Browse topics</p>
+      <div class="mt-5">
+        <Navigation compact={true} />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

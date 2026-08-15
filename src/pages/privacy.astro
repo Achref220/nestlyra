@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_NAME } from '../utils/categories';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="Privacy policy for Nestlyra — how we handle information on nestlyraliving.com."
+  canonicalPath="/privacy/"
+>
+  <article class="container-editorial max-w-3xl py-10 sm:py-14 md:py-20">
+    <p class="section-label">Legal</p>
+    <h1 class="mt-2 font-display text-4xl text-ink sm:mt-3 sm:text-5xl">Privacy Policy</h1>
+    <p class="mt-4 text-sm text-ink-muted">Last updated: August 11, 2026</p>
+    <div class="prose-editorial mt-8">
+      <p>
+        {SITE_NAME} (“we”, “us”) operates nestlyraliving.com. This policy explains what information
+        may be collected when you visit the site and how it is used.
+      </p>
+      <h2>Information we collect</h2>
+      <p>
+        Like most static websites, we may receive standard server or CDN logs such as IP address,
+        browser type, and pages requested. If you join our newsletter (when signup is enabled), we
+        collect the email address you submit through our newsletter provider.
+      </p>
+      <h2>Cookies and analytics</h2>
+      <p>
+        We may load Google Analytics 4 when a measurement ID is configured for the deployed site. If
+        analytics is not configured, we do not load analytics scripts. Affiliate partners such as
+        Amazon may set cookies when you follow outbound product links. Review their policies for
+        details.
+      </p>
+      <h2>How we use information</h2>
+      <ul>
+        <li>To operate and improve the website</li>
+        <li>To send newsletters you opt into (when available)</li>
+        <li>To understand aggregate traffic patterns when analytics is enabled</li>
+      </ul>
+      <h2>Third-party services</h2>
+      <p>
+        Hosting, newsletter, analytics, and affiliate partners process data under their own terms. We
+        do not sell personal information.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        Questions about privacy: <a href="mailto:hello@nestlyraliving.com">hello@nestlyraliving.com</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
