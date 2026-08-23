@@ -19,7 +19,7 @@ const isAssetImage = typeof image !== 'string';
 
 {
   !isPlaceholderLink && (
-    <aside class="my-8 border border-rule bg-linen p-4 sm:my-10 sm:p-6" data-affiliate-product>
+    <aside class="my-8 min-w-0 overflow-hidden border border-rule bg-linen p-4 sm:my-10 sm:p-6" data-affiliate-product>
       <div class="grid gap-4 sm:grid-cols-[7.5rem_1fr] sm:items-start sm:gap-5">
         {
           isAssetImage ? (
@@ -56,10 +56,10 @@ const isAssetImage = typeof image !== 'string';
             <a
               href={url}
               class="btn-primary btn-block-mobile !text-linen text-center"
-              rel="sponsored noopener noreferrer"
+              rel="nofollow sponsored noopener noreferrer"
               target="_blank"
             >
-              View on Amazon
+              View on Amazon →
             </a>
           </div>
           <p class="mt-4 text-xs leading-relaxed text-ink-muted/80">
