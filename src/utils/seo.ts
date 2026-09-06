@@ -2,8 +2,15 @@ import { SITE_NAME } from './categories';
 
 const fallbackSite = 'https://nestlyraliving.com';
 
+/** Canonical production origin. RSS must never emit localhost or http URLs. */
+export const RSS_SITE_ORIGIN = 'https://nestlyraliving.com';
+
 export function getSiteUrl(): string {
   return (import.meta.env.PUBLIC_SITE_URL || fallbackSite).replace(/\/$/, '');
+}
+
+export function getRssSiteOrigin(): string {
+  return RSS_SITE_ORIGIN;
 }
 
 export function absoluteUrl(path = '/'): string {

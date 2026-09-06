@@ -1,5 +1,5 @@
 ---
-import { absoluteUrl, buildPageTitle } from '../utils/seo';
+import { absoluteUrl, buildPageTitle, getRssSiteOrigin } from '../utils/seo';
 import { SITE_NAME } from '../utils/categories';
 
 interface Props {
@@ -57,7 +57,12 @@ const schemas = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
 {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
 {author && <meta property="article:author" content={author} />}
 
-<link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} Articles`} href="/rss.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="Nestlyra Living RSS Feed"
+  href={`${getRssSiteOrigin()}/rss.xml`}
+/>
 
 {
   schemas.filter(Boolean).map((schema) => (
