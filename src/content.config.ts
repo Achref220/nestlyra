@@ -56,6 +56,8 @@ const articles = defineCollection({
         .optional(),
       affiliateProducts: z.array(affiliateProductSchema).optional(),
       relatedSlugs: z.array(z.string()).optional(),
+      /** Opt-in Amazon Prime membership CTA. Default off — enable only on shopping-focused articles. */
+      showAmazonPrimeCta: z.boolean().default(false),
     });
   },
 });

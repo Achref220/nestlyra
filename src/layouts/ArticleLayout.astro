@@ -4,6 +4,7 @@ import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ProductRecommendation from '../components/ProductRecommendation.astro';
+import AmazonPrimeCta from '../components/AmazonPrimeCta.astro';
 import RelatedArticles from '../components/RelatedArticles.astro';
 import PinterestShare from '../components/PinterestShare.astro';
 import type { ArticleEntry } from '../utils/articles';
@@ -116,6 +117,8 @@ const jsonLd = [
     <div class="container-editorial mt-8 grid gap-8 sm:mt-12 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_16rem]">
       <div class="prose-editorial order-2 min-w-0 max-w-3xl lg:order-1">
         <slot />
+
+        {data.showAmazonPrimeCta ? <AmazonPrimeCta /> : null}
 
         {
           shopProducts.length ? (
